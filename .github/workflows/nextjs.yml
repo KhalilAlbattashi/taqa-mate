@@ -80,7 +80,7 @@ jobs:
         with:
           path: ./out
 
-  # Deployment job
+  # Deployment job to deploy to github pages
   deploy:
     environment:
       name: github-pages
