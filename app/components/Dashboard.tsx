@@ -1,3 +1,4 @@
+'use client'
 import type { FormData } from "../types"
 import { Zap, TrendingUp, DollarSign, Lightbulb, Wind, SquareIcon, Shield } from "lucide-react"
 
