@@ -1,6 +1,5 @@
-'use client'
-import { FormData } from '../types'
-import { Zap, TrendingUp, DollarSign, Lightbulb } from 'lucide-react'
+import type { FormData } from "../types"
+import { Zap, TrendingUp, DollarSign, Lightbulb, Wind, SquareIcon, Shield } from "lucide-react"
 
 interface DashboardProps {
   formData: FormData
@@ -15,12 +14,17 @@ interface Recommendation {
   savings: number
   cost: number
   icon: React.ElementType
+  condition: (formData: FormData) => boolean
 }
 
 export default function Dashboard({ formData, selectedRecommendations, setSelectedRecommendations }: DashboardProps) {
   // Simple energy analysis (this should be replaced with more accurate calculations)
-  const energyIntensity = parseFloat(formData.monthlyElectricityConsumption) / parseFloat(formData.totalFloorArea)
-  const estimatedEnergyCost = parseFloat(formData.monthlyElectricityConsumption) * formData.electricityCost
+  const energyIntensity =
+    Number.parseFloat(formData.monthlyElectricityConsumption) / Number.parseFloat(formData.totalFloorArea)
+  const estimatedEnergyCost = Number.parseFloat(formData.monthlyElectricityConsumption) * formData.electricityCost
+
+  const currentYear = new Date().getFullYear()
+  const buildingAge = currentYear - Number.parseInt(formData.yearOfConstruction)
 
   const recommendations: Recommendation[] = [
     {
@@ -29,15 +33,8 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
       description: "Replace traditional bulbs with energy-efficient LED lights.",
       savings: 0.15,
       cost: 500,
-      icon: Lightbulb
-    },
-    {
-      id: "insulation",
-      title: "Improve Insulation",
-      description: "Enhance your building's insulation to reduce heat loss and gain.",
-      savings: 0.2,
-      cost: 2000,
-      icon: TrendingUp
+      icon: Lightbulb,
+      condition: () => true, // Always show this recommendation
     },
     {
       id: "smartThermostats",
@@ -45,20 +42,57 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
       description: "Use smart thermostats to optimize temperature settings.",
       savings: 0.1,
       cost: 300,
-      icon: Zap
-    }
+      icon: Zap,
+      condition: () => true, // Always show this recommendation
+    },
+    {
+      id: "windowGlazing",
+      title: "Install Double or Triple Glazed Windows",
+      description: "Improve insulation with advanced window glazing.",
+      savings: 0.12,
+      cost: 3000,
+      icon: SquareIcon,
+      condition: (formData) => formData.windowToWallRatio > 20,
+    },
+    {
+      id: "splitUnits",
+      title: "Install Split AC Units",
+      description: "Replace less efficient HVAC systems with split AC units.",
+      savings: 0.2,
+      cost: 2000,
+      icon: Wind,
+      condition: (formData) => formData.hvacUse !== "Split Units" && formData.hvacUse !== "",
+    },
+    {
+      id: "roofInsulation",
+      title: "Add Roof Insulation",
+      description: "Improve energy efficiency with roof insulation.",
+      savings: 0.15,
+      cost: 1500,
+      icon: Shield,
+      condition: (formData) => buildingAge >= 25 && !formData.roofInsulation,
+    },
+    {
+      id: "wallInsulation",
+      title: "Add Wall Insulation",
+      description: "Enhance building envelope with wall insulation.",
+      savings: 0.18,
+      cost: 2500,
+      icon: Shield,
+      condition: (formData) => buildingAge >= 25 && !formData.wallInsulation,
+    },
   ]
 
+  const applicableRecommendations = recommendations.filter((rec) => rec.condition(formData))
+
   const toggleRecommendation = (id: string) => {
-    setSelectedRecommendations(prev =>
-      prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]
-    )
+    setSelectedRecommendations((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]))
   }
 
   const calculateSavings = () => {
     const baseCost = estimatedEnergyCost
     const savingsPercentage = selectedRecommendations.reduce((total, id) => {
-      const recommendation = recommendations.find(r => r.id === id)
+      const recommendation = recommendations.find((r) => r.id === id)
       return total + (recommendation?.savings || 0)
     }, 0)
     return baseCost * savingsPercentage
@@ -70,7 +104,7 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
 
   const calculateTotalCost = () => {
     return selectedRecommendations.reduce((total, id) => {
-      const recommendation = recommendations.find(r => r.id === id)
+      const recommendation = recommendations.find((r) => r.id === id)
       return total + (recommendation?.cost || 0)
     }, 0)
   }
@@ -78,7 +112,7 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
   const calculatePaybackPeriod = () => {
     const totalCost = calculateTotalCost()
     const annualSavings = calculateSavings() * 12
-    return annualSavings > 0 ? (totalCost / annualSavings).toFixed(1) : 'N/A'
+    return annualSavings > 0 ? (totalCost / annualSavings).toFixed(1) : "N/A"
   }
 
   return (
@@ -91,7 +125,9 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
               <Zap className="w-6 h-6 text-yellow-400 mr-2" />
               <p className="text-sm font-medium text-gray-300">Total Energy Use</p>
             </div>
-            <p className="text-2xl font-bold text-gray-100">{parseFloat(formData.monthlyElectricityConsumption).toFixed(2)} kWh/month</p>
+            <p className="text-2xl font-bold text-gray-100">
+              {Number.parseFloat(formData.monthlyElectricityConsumption).toFixed(2)} kWh/month
+            </p>
           </div>
           <div className="bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center mb-2">
@@ -112,7 +148,7 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
       <div className="bg-gray-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-yellow-400">Recommendations</h2>
         <div className="space-y-4">
-          {recommendations.map((rec) => (
+          {applicableRecommendations.map((rec) => (
             <div key={rec.id} className="flex items-center space-x-4 p-4 bg-gray-700 rounded-lg">
               <input
                 type="checkbox"
@@ -138,18 +174,29 @@ export default function Dashboard({ formData, selectedRecommendations, setSelect
         <div className="bg-gray-800 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4 text-yellow-400">Savings Summary</h2>
           <div className="space-y-2">
-            <p className="text-gray-300">Current monthly cost: <span className="font-bold text-gray-100">{estimatedEnergyCost.toFixed(2)} OMR</span></p>
-            <p className="text-gray-300">Estimated new monthly cost: <span className="font-bold text-green-400">{calculateNewCost().toFixed(2)} OMR</span></p>
-            <p className="text-gray-300">Monthly savings: <span className="font-bold text-green-400">{calculateSavings().toFixed(2)} OMR</span></p>
-            <p className="text-gray-300">Total implementation cost: <span className="font-bold text-yellow-400">{calculateTotalCost().toFixed(2)} OMR</span></p>
-            <p className="text-gray-300">Estimated payback period: <span className="font-bold text-yellow-400">{calculatePaybackPeriod()} years</span></p>
+            <p className="text-gray-300">
+              Current monthly cost:{" "}
+              <span className="font-bold text-gray-100">{estimatedEnergyCost.toFixed(2)} OMR</span>
+            </p>
+            <p className="text-gray-300">
+              Estimated new monthly cost:{" "}
+              <span className="font-bold text-green-400">{calculateNewCost().toFixed(2)} OMR</span>
+            </p>
+            <p className="text-gray-300">
+              Monthly savings: <span className="font-bold text-green-400">{calculateSavings().toFixed(2)} OMR</span>
+            </p>
+            <p className="text-gray-300">
+              Total implementation cost:{" "}
+              <span className="font-bold text-yellow-400">{calculateTotalCost().toFixed(2)} OMR</span>
+            </p>
+            <p className="text-gray-300">
+              Estimated payback period:{" "}
+              <span className="font-bold text-yellow-400">{calculatePaybackPeriod()} years</span>
+            </p>
           </div>
         </div>
       )}
     </div>
   )
 }
-
-
-
 
