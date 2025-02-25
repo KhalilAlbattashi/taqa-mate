@@ -18,6 +18,7 @@ const steps = [
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(0)
+  const currentYear = new Date().getFullYear()
   const [formData, setFormData] = useState({
     buildingType: '',
     location: '',
@@ -25,6 +26,11 @@ export default function Home() {
     numberOfFloors: '',
     windowToWallRatio: 20,
     monthlyElectricityConsumption: '',
+    monthlyConsumption: Array(12).fill('').map((_, i) => ({
+      month: new Date(currentYear, i).toLocaleString('default', { month: 'long' }),
+      year: currentYear,
+      consumption: ''
+    })),
     electricityCost: 0.02,
     hvacUse: '',
     yearOfConstruction: new Date().getFullYear().toString(),
@@ -76,12 +82,12 @@ export default function Home() {
             <div
               key={step.name}
               className={`flex-1 text-center ${
-                index <= currentStep ? 'text-yellow-400 font-semibold' : 'text-gray-500'
+                index <= currentStep ? 'text-[#12ae79]' : 'text-gray-500'
               }`}
             >
               <div className="relative">
                 <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center border-2 ${
-                  index <= currentStep ? 'border-yellow-400 bg-yellow-400 text-gray-900' : 'border-gray-700 bg-gray-800'
+                  index <= currentStep ? 'border-[#12ae79] bg-[#12ae79] text-white' : 'border-gray-700 bg-gray-800'
                 }`}>
                   <step.icon className="w-6 h-6" />
                 </div>
@@ -95,7 +101,7 @@ export default function Home() {
             <div
               key={index}
               className={`flex-1 h-2 ${
-                index < currentStep ? 'bg-yellow-400' : 'bg-gray-700'
+                index < currentStep ? 'bg-[#12ae79]' : 'bg-gray-700'
               }`}
             />
           ))}

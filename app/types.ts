@@ -5,6 +5,11 @@ export interface FormData {
   numberOfFloors: string
   windowToWallRatio: number
   monthlyElectricityConsumption: string
+  monthlyConsumption: Array<{
+    month: string
+    year: number
+    consumption: string
+  }>
   electricityCost: number
   hvacUse: string
   yearOfConstruction: string

@@ -32,8 +32,8 @@ export default function OptionalInputs({ formData, onChange }: OptionalInputsPro
         />
       </div>
       <div>
-        <label className="block mb-2 text-sm font-medium text-gray-300 flex items-center">
-          <Shield className="w-5 h-5 mr-2 text-yellow-400" />
+        <label className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center">
+          <Shield className="w-5 h-5 mr-2 text-[#12ae79]" />
           Insulation
         </label>
         <div className="space-y-2">
@@ -42,18 +42,18 @@ export default function OptionalInputs({ formData, onChange }: OptionalInputsPro
               type="checkbox"
               checked={formData.roofInsulation}
               onChange={(e) => onChange('roofInsulation', e.target.checked)}
-              className="mr-2"
+              className="mr-2 text-[#12ae79] focus:ring-[#12ae79]"
             />
-            <span className="text-gray-300">Roof Insulation</span>
+            <span className="text-gray-700 dark:text-gray-300">Roof Insulation</span>
           </label>
           <label className="flex items-center">
             <input
               type="checkbox"
               checked={formData.wallInsulation}
               onChange={(e) => onChange('wallInsulation', e.target.checked)}
-              className="mr-2"
+              className="mr-2 text-[#12ae79] focus:ring-[#12ae79]"
             />
-            <span className="text-gray-300">Wall Insulation</span>
+            <span className="text-gray-700 dark:text-gray-300">Wall Insulation</span>
           </label>
         </div>
       </div>
@@ -63,10 +63,10 @@ export default function OptionalInputs({ formData, onChange }: OptionalInputsPro
             type="checkbox"
             checked={formData.solarPanels}
             onChange={(e) => onChange('solarPanels', e.target.checked)}
-            className="mr-2"
+            className="mr-2 text-[#12ae79] focus:ring-[#12ae79]"
           />
-          <Sun className="w-5 h-5 mr-2 text-yellow-400" />
-          <span className="text-gray-300">Solar Panels</span>
+          <Sun className="w-5 h-5 mr-2 text-[#12ae79]" />
+          <span className="text-gray-700 dark:text-gray-300">Solar Panels</span>
         </label>
       </div>
     </div>

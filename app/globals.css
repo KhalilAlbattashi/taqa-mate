@@ -2,3 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --primary: 18 174 121;
+  }
+}
+
+.text-primary {
+  color: rgb(var(--primary));
+}
+
+.bg-primary {
+  background-color: rgb(var(--primary));
+}
+

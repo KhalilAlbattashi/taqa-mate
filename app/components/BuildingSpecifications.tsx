@@ -11,8 +11,8 @@ export default function BuildingSpecifications({ formData, onChange }: BuildingS
   return (
     <div className="space-y-6">
       <div>
-        <label htmlFor="totalFloorArea" className="block mb-2 text-sm font-medium text-gray-300 flex items-center">
-          <SquareFoot className="w-5 h-5 mr-2 text-yellow-400" />
+        <label htmlFor="totalFloorArea" className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center">
+          <SquareFoot className="w-5 h-5 mr-2 text-[#12ae79]" />
           Total Floor Area (m²)
         </label>
         <input
@@ -20,13 +20,13 @@ export default function BuildingSpecifications({ formData, onChange }: BuildingS
           id="totalFloorArea"
           value={formData.totalFloorArea}
           onChange={(e) => onChange('totalFloorArea', e.target.value)}
-          className="w-full p-3 border border-gray-600 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 bg-gray-700 text-gray-100"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-[#12ae79] focus:border-[#12ae79] bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           required
         />
       </div>
       <div>
-        <label htmlFor="numberOfFloors" className="block mb-2 text-sm font-medium text-gray-300 flex items-center">
-          <Building2 className="w-5 h-5 mr-2 text-yellow-400" />
+        <label htmlFor="numberOfFloors" className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center">
+          <Building2 className="w-5 h-5 mr-2 text-[#12ae79]" />
           Number of Floors
         </label>
         <input
@@ -34,13 +34,13 @@ export default function BuildingSpecifications({ formData, onChange }: BuildingS
           id="numberOfFloors"
           value={formData.numberOfFloors}
           onChange={(e) => onChange('numberOfFloors', e.target.value)}
-          className="w-full p-3 border border-gray-600 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 bg-gray-700 text-gray-100"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-[#12ae79] focus:border-[#12ae79] bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           required
         />
       </div>
       <div>
-        <label htmlFor="windowToWallRatio" className="block mb-2 text-sm font-medium text-gray-300 flex items-center">
-          <Maximize className="w-5 h-5 mr-2 text-yellow-400" />
+        <label htmlFor="windowToWallRatio" className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-300 flex items-center">
+          <Maximize className="w-5 h-5 mr-2 text-[#12ae79]" />
           Window-to-Wall Ratio (%)
         </label>
         <input
@@ -50,9 +50,9 @@ export default function BuildingSpecifications({ formData, onChange }: BuildingS
           max="100"
           value={formData.windowToWallRatio}
           onChange={(e) => onChange('windowToWallRatio', parseInt(e.target.value))}
-          className="w-full"
+          className="w-full accent-[#12ae79]"
         />
-        <span className="text-sm text-gray-400">{formData.windowToWallRatio}%</span>
+        <span className="text-sm text-gray-600 dark:text-gray-400">{formData.windowToWallRatio}%</span>
       </div>
     </div>
   )
