@@ -127,7 +127,7 @@ export default function EnergyUsage({ formData, onChange }: EnergyUsageProps) {
                     {months.length}/12 months
                   </span>
                 </h3>
-                {months.map((data, yearIndex) => {
+                {months.map((data) => {
                   const globalIndex = monthlyData.findIndex(m => m.month === data.month && m.year === data.year)
                   return (
                     <div key={`${year}-${data.month}`} className="flex items-center gap-2">
